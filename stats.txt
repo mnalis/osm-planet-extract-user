@@ -76,6 +76,13 @@ env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,70s user 0,14s system 99% c
 ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 1,841 total
 wc -l  0,00s user 0,00s system 0% cpu 1,841 total
 
+% time env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l  # compile regexps with /o, in addition to fast path skip changeset with index() and uid with regex
+Searching for UIDs: 94; uid_matchstr= uid="94"
+900
+env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,31s user 0,12s system 99% cpu 1,436 total
+ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 1,436 total
+wc -l  0,00s user 0,00s system 0% cpu 1,435 total
+
 
 ----
 

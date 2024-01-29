@@ -18,7 +18,7 @@ my $interesting_uid = $ARGV[0];
 die "no UID specified" unless $interesting_uid;
 if ($interesting_uid =~ /^\d.*\|/) {
     # auto-fix interesting uid if it contains "|" but does not start with "("
-    $interesting_uid = '(' . $interesting_uid . ')'
+    $interesting_uid = '(' . $interesting_uid . ')';
 }
 
 $DEBUG > 0 && print STDERR "Searching for UIDs: $interesting_uid\n";
@@ -32,8 +32,8 @@ while (<STDIN>)
         print;
         $active = 0 if /^\s*<\/changeset>\s*$/o;   # changeset tag closed, do not print anymore
     }
-    
-    next unless /<changeset /o;                    # fast path skip only
+
+    next unless index($_, '<changeset ') >= 0;     # fast path skip only
     next unless / uid="${interesting_uid}" /o;     # fast path skip only
 
     $DEBUG > 7 && print STDERR "interesing uid $interesting_uid starts here:\n";
