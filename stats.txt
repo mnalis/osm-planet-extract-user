@@ -49,32 +49,43 @@ wc -l  0,00s user 0,00s system 0% cpu 2,576 total
 ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 2,259 total
 wc -l  0,00s user 0,00s system 0% cpu 2,258 total
 
+% time env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l  # compile regexps with /o, in addition to fast path skip with both (changeset then  uid)
+900
+env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,70s user 0,14s system 99% cpu 1,842 total
+ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 1,841 total
+wc -l  0,00s user 0,00s system 0% cpu 1,841 total
 
 
 ----
 
-variations:
+variations in speed:
 
-% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+% time env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
 900
-./osm-extract-uid.pl 94 < /tmp/h.osm  2,03s user 0,18s system 99% cpu 2,213 total
-ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 2,213 total
-wc -l  0,00s user 0,00s system 0% cpu 2,212 total
+env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,73s user 0,15s system 99% cpu 1,886 total
+ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 1,885 total
+wc -l  0,00s user 0,00s system 0% cpu 1,885 total
 
-% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+% time env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
 900
-./osm-extract-uid.pl 94 < /tmp/h.osm  2,13s user 0,11s system 99% cpu 2,243 total
-ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 2,242 total
-wc -l  0,00s user 0,00s system 0% cpu 2,241 total
+env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,72s user 0,14s system 99% cpu 1,864 total
+ag -F -c 'uid="94"'  0,00s user 0,01s system 0% cpu 1,864 total
+wc -l  0,00s user 0,00s system 0% cpu 1,863 total
 
-% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+% time env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
 900
-./osm-extract-uid.pl 94 < /tmp/h.osm  2,06s user 0,15s system 99% cpu 2,204 total
-ag -F -c 'uid="94"'  0,00s user 0,01s system 0% cpu 2,204 total
-wc -l  0,00s user 0,00s system 0% cpu 2,203 total
+env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,67s user 0,19s system 99% cpu 1,863 total
+ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 1,862 total
+wc -l  0,00s user 0,00s system 0% cpu 1,861 total
 
-% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+% time env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
 900
-./osm-extract-uid.pl 94 < /tmp/h.osm  2,12s user 0,14s system 99% cpu 2,252 total
-ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 2,252 total
-wc -l  0,00s user 0,00s system 0% cpu 2,251 total
+env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,72s user 0,12s system 99% cpu 1,837 total
+ag -F -c 'uid="94"'  0,00s user 0,01s system 0% cpu 1,837 total
+wc -l  0,00s user 0,00s system 0% cpu 1,836 total
+
+% time env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+900
+env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,78s user 0,12s system 99% cpu 1,900 total
+ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 1,899 total
+wc -l  0,00s user 0,00s system 0% cpu 1,899 total

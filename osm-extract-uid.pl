@@ -24,18 +24,18 @@ while (<STDIN>)
     
     if ($active) {
         print;
-        $active = 0 if /^\s*<\/changeset>\s*$/;    # changeset tag closed, do not print anymore
+        $active = 0 if /^\s*<\/changeset>\s*$/o;   # changeset tag closed, do not print anymore
     }
     
-    next unless /<changeset /;                    # fast path skip only
-    next unless / uid="${interesting_uid}" /;     # fast path skip only
+    next unless /<changeset /o;                    # fast path skip only
+    next unless / uid="${interesting_uid}" /o;     # fast path skip only
 
     $DEBUG > 7 && print "interesing uid $interesting_uid starts here:\n";
     
-    if (/^\s*<changeset .*uid="${interesting_uid}"/) {
+    if (/^\s*<changeset .*uid="${interesting_uid}"/o) {
         print;  # always print start of changeset
-        next if /\/>\s*$/; # if changeset XML tag is auto-closed in same line, no further action needed
-        die "unparsable line $_" unless />\s*$/;
+        next if /\/>\s*$/o; # if changeset XML tag is auto-closed in same line, no further action needed
+        die "unparsable line $_" unless />\s*$/o;
         $active = 1;    # print everything until the end of the changeset
     }
 }
