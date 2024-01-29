@@ -1,5 +1,8 @@
+# Debian Bookworm (perl 5.36.0-7+deb12u1)
+# CPU 8x model name      : 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz
+
 % ls -l /tmp/h.osm
--rw------- 1 mnalis mnalis 953100007 Jan 29 17:19 /tmp/h.osm
+-rw------- 1 mnalis mnalis 953100007 Jan 29 17:19 /tmp/h.osm        # on tmpfs, unpacked partial https://planet.openstreetmap.org/planet/full-history/history-latest.osm.bz2
 
 % time cat /tmp/h.osm > /dev/null
 cat /tmp/h.osm > /dev/null  0,00s user 0,08s system 99% cpu 0,077 total
@@ -15,9 +18,63 @@ env LC_ALL=C fgrep -c 'uid="94"' /tmp/h.osm  0,52s user 0,13s system 99% cpu 0,6
 900
 env LC_ALL=C ag -F -c 'uid="94"' /tmp/h.osm  0,41s user 0,02s system 100% cpu 0,422 total
 
-% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l   # no fast path skipping in perl
 900
 ./osm-extract-uid.pl 94 < /tmp/h.osm  4,43s user 0,12s system 99% cpu 4,558 total
 ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 4,557 total
 wc -l  0,00s user 0,00s system 0% cpu 4,557 total
 
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l   # fast path skip with: uid="${interesting_uid}" 
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  2,46s user 0,12s system 99% cpu 2,586 total
+ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 2,585 total
+wc -l  0,00s user 0,00s system 0% cpu 2,585 total
+
+
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l   # fast path skip with: <changeset
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  4,08s user 0,15s system 99% cpu 4,232 total
+ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 4,231 total
+wc -l  0,00s user 0,00s system 0% cpu 4,231 total
+
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l   # fast path skip with both (uid then changeset)
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  2,45s user 0,12s system 99% cpu 2,577 total
+ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 2,576 total
+wc -l  0,00s user 0,00s system 0% cpu 2,576 total
+
+%  time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l  # fast path skip with both (changeset then  uid)
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  2,09s user 0,16s system 99% cpu 2,259 total
+ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 2,259 total
+wc -l  0,00s user 0,00s system 0% cpu 2,258 total
+
+
+
+----
+
+variations:
+
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  2,03s user 0,18s system 99% cpu 2,213 total
+ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 2,213 total
+wc -l  0,00s user 0,00s system 0% cpu 2,212 total
+
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  2,13s user 0,11s system 99% cpu 2,243 total
+ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 2,242 total
+wc -l  0,00s user 0,00s system 0% cpu 2,241 total
+
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  2,06s user 0,15s system 99% cpu 2,204 total
+ag -F -c 'uid="94"'  0,00s user 0,01s system 0% cpu 2,204 total
+wc -l  0,00s user 0,00s system 0% cpu 2,203 total
+
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  2,12s user 0,14s system 99% cpu 2,252 total
+ag -F -c 'uid="94"'  0,00s user 0,00s system 0% cpu 2,252 total
+wc -l  0,00s user 0,00s system 0% cpu 2,251 total

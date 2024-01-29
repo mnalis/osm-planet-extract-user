@@ -27,8 +27,8 @@ while (<STDIN>)
         $active = 0 if /^\s*<\/changeset>\s*$/;    # changeset tag closed, do not print anymore
     }
     
-#    next unless /<changeset /;                    # fast path skip only
-#    next unless / uid="${interesting_uid}" /;     # fast path skip only
+    next unless /<changeset /;                    # fast path skip only
+    next unless / uid="${interesting_uid}" /;     # fast path skip only
 
     $DEBUG > 7 && print "interesing uid $interesting_uid starts here:\n";
     
