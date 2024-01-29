@@ -10,6 +10,10 @@ cat /tmp/h.osm > /dev/null  0,00s user 0,08s system 99% cpu 0,077 total
 % time cat /tmp/h.osm > /dev/zero
 cat /tmp/h.osm > /dev/zero  0,00s user 0,08s system 99% cpu 0,087 total
 
+% time env LC_ALL=C wc -l /tmp/h.osm
+8935446 /tmp/h.osm
+env LC_ALL=C wc -l /tmp/h.osm  0,00s user 0,09s system 99% cpu 0,094 total
+
 % time env LC_ALL=C fgrep -c 'uid="94"' /tmp/h.osm
 900
 env LC_ALL=C fgrep -c 'uid="94"' /tmp/h.osm  0,52s user 0,13s system 99% cpu 0,650 total
@@ -17,6 +21,23 @@ env LC_ALL=C fgrep -c 'uid="94"' /tmp/h.osm  0,52s user 0,13s system 99% cpu 0,6
 % time env LC_ALL=C ag -F -c 'uid="94"' /tmp/h.osm
 900
 env LC_ALL=C ag -F -c 'uid="94"' /tmp/h.osm  0,41s user 0,02s system 100% cpu 0,422 total
+
+% time env LC_ALL=C ag -c '^\s*<changeset.*uid="94"' /tmp/h.osm
+900
+env LC_ALL=C ag -c '^\s*<changeset.*uid="94"' /tmp/h.osm  1,01s user 0,03s system 100% cpu 1,039 total
+
+% time env LC_ALL=C perl -nE '$c++ if /uid="94"/o; END { say $c }' /tmp/h.osm
+900
+env LC_ALL=C perl -nE '$c++ if /uid="94"/o; END { say $c }' /tmp/h.osm  1,19s user 0,13s system 99% cpu 1,317 total
+
+% time env LC_ALL=C perl -nE 'END { say "dummy loop" }' /tmp/h.osm
+dummy loop
+env LC_ALL=C perl -nE 'END { say "dummy loop" }' /tmp/h.osm  0,44s user 0,12s system 99% cpu 0,553 total
+
+% time ag -F 'uid="94"' < /tmp/h.osm | grep -c '^\s*<changeset.*uid="94"'
+900
+ag -F 'uid="94"' < /tmp/h.osm  0,71s user 0,13s system 99% cpu 0,848 total
+grep --color=auto -c '^\s*<changeset.*uid="94"'  0,02s user 0,00s system 2% cpu 0,847 total
 
 % time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l   # no fast path skipping in perl
 900
