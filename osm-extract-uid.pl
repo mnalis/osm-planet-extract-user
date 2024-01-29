@@ -4,7 +4,7 @@
 # use in pipeline to extract only specific users from OSM history planet dump, like so:
 # curl https://planet.openstreetmap.org/planet/full-history/history-latest.osm.bz2 | pbzip2 -dc | ./osm-extract-uid.pl '1234'
 #
-# accepts regex, so '1234|5678' will extract both UIDs
+# accepts regex, so '(1234|5678)' will extract both UIDs
 #
 # FIXME: one should never parse XML like this, it will break. Use SAX or something to avoid loading DOM, if not too slow
 
@@ -37,5 +37,7 @@ while (<STDIN>)
         next if /\/>\s*$/o; # if changeset XML tag is auto-closed in same line, no further action needed
         die "unparsable line $_" unless />\s*$/o;
         $active = 1;    # print everything until the end of the changeset
+    } else {
+        die "confusing line: $_";
     }
 }
