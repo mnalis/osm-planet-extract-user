@@ -1,3 +1,7 @@
 *~
 *.osm.bz2
+*.osm.gz
 *.osm
+*.osm.zst*
+nytprof*
+*.out
