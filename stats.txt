@@ -1,0 +1,23 @@
+% ls -l /tmp/h.osm
+-rw------- 1 mnalis mnalis 953100007 Jan 29 17:19 /tmp/h.osm
+
+% time cat /tmp/h.osm > /dev/null
+cat /tmp/h.osm > /dev/null  0,00s user 0,08s system 99% cpu 0,077 total
+
+% time cat /tmp/h.osm > /dev/zero
+cat /tmp/h.osm > /dev/zero  0,00s user 0,08s system 99% cpu 0,087 total
+
+% time env LC_ALL=C fgrep -c 'uid="94"' /tmp/h.osm
+900
+env LC_ALL=C fgrep -c 'uid="94"' /tmp/h.osm  0,52s user 0,13s system 99% cpu 0,650 total
+
+% time env LC_ALL=C ag -F -c 'uid="94"' /tmp/h.osm
+900
+env LC_ALL=C ag -F -c 'uid="94"' /tmp/h.osm  0,41s user 0,02s system 100% cpu 0,422 total
+
+% time ./osm-extract-uid.pl 94 < /tmp/h.osm | ag -F -c 'uid="94"' | wc -l
+900
+./osm-extract-uid.pl 94 < /tmp/h.osm  4,43s user 0,12s system 99% cpu 4,558 total
+ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 4,557 total
+wc -l  0,00s user 0,00s system 0% cpu 4,557 total
+
