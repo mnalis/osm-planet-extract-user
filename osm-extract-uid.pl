@@ -30,12 +30,12 @@ while (<STDIN>)
     
     if ($active) {
         print;
-        $active = 0 if /^\s*<\/${active}>\s*$/;   # changeset/node/way/relation tag has just been closed, stop printing in the future
+        $active = 0 if /^\s*<\/${active}>\s*$/;    # changeset/node/way/relation tag has just been closed, stop printing in the future
         $DEBUG > 6 && print STDERR "    active=>$active< after line: $_";
         next;
     }
 
-    next unless / uid="${interesting_uid}"/o;      # fast path skip only
+    next unless / uid="${interesting_uid}"/o;      # fast path skip only performance optimization
 
     $DEBUG > 7 && print STDERR "  interesing uid $interesting_uid starts here: $_";
     
@@ -47,6 +47,6 @@ while (<STDIN>)
         $active = $type;    # print everything until the end of the changeset (and remember what tag needs to be closed)
         $DEBUG > 5 && print STDERR "  found open XML element, printing until end of element: $active\n";
     } else {
-        die "confusing line: $_";
+        die "confusing line: $_";                  # must be commented out if fast-path-skip performance optimization above is disabled
     }
 }
