@@ -12,7 +12,7 @@ use warnings;
 use strict;
 use autodie qw/:all/;
 
-my $DEBUG = 1;
+my $DEBUG = $ENV{DEBUG} || 0;
 
 my $interesting_uid = $ARGV[0];
 die "no UID specified" unless $interesting_uid;
@@ -23,26 +23,28 @@ if ($interesting_uid =~ /^\d.*\|/) {
 
 $DEBUG > 0 && print STDERR "Searching for UIDs: $interesting_uid\n";
 
-my $active = 0;
+my $active = undef;
 while (<STDIN>)
 {
     #$DEBUG > 9 && print STDERR "line: $_";
     
-    if ($active) {
+    if (defined $active) {
         print;
-        $active = 0 if /^\s*<\/changeset>\s*$/o;   # changeset tag closed, do not print anymore
+        $active = undef if /^\s*<\/${active}>\s*$/o;   # changeset/node/way/relation tag has just been closed, stop printing in the future
+        next;
     }
 
-    next unless index($_, '<changeset ') >= 0;     # fast path skip only
-    next unless / uid="${interesting_uid}" /o;     # fast path skip only
+    next unless / uid="${interesting_uid}"/o;      # fast path skip only
 
-    $DEBUG > 7 && print STDERR "interesing uid $interesting_uid starts here:\n";
+    $DEBUG > 7 && print STDERR "interesing uid $interesting_uid starts here: $_";
     
-    if (/^\s*<changeset .*uid="${interesting_uid}"/o) {
+    if (/^\s*<(changeset|node|way|relation) .*?uid="${interesting_uid}"/o) {
+        my $type=$1;
         print;  # always print start of changeset
-        next if /\/>\s*$/o; # if changeset XML tag is auto-closed in same line, no further action needed
+        next if /\/>\s*$/o; # if changeset/node/way/relation XML tag is auto-closed in same line, no further action needed
         die "unparsable line $_" unless />\s*$/o;
-        $active = 1;    # print everything until the end of the changeset
+        $active = $type;    # print everything until the end of the changeset (and remember what tag needs to be closed)
+        $DEBUG > 5 && print STDERR "found open XML element, printing until end of element: $active\n";
     } else {
         die "confusing line: $_";
     }
