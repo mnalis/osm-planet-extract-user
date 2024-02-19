@@ -2,4 +2,8 @@
 - try if we can use MCE::Grep ?
 - add sample scripts to extract tags user by that user, sorted by popularity
 - another (slower) script which also fetches whole elements (way/node/relation) which mention specified UIDs
+  (perhaps two-step - extract changeset numbers from changesets-xxxxxx.bz2 to a file, and then fetch all those object
+  ids from a file? would that be faster? more universal at least)
+  That way one can see current history of all elements they ever touched (e.g. if someone else has changed them)
+- benchmark against e.g. "osmium changeset-filter -U 1234 -f osm -o changesets-1234.osm changesets-240212.osm.bz2"
 - add README.md
