@@ -117,3 +117,23 @@ wc -l  0,00s user 0,00s system 0% cpu 1,836 total
 env LC_ALL=C ./osm-extract-uid.pl 94 < /tmp/h.osm  1,78s user 0,12s system 99% cpu 1,900 total
 ag -F -c 'uid="94"'  0,01s user 0,00s system 0% cpu 1,899 total
 wc -l  0,00s user 0,00s system 0% cpu 1,899 total
+
+
+----
+changesets only osmium compare:
+
+% time osmium changeset-filter -U 172435  -f osm -o changesets-mn-172435.osm changesets-240212.osm.bz2
+[======================================================================] 100%
+osmium changeset-filter -U 172435 -f osm -o changesets-mn-172435.osm   1870.97s user 6.01s system 168% cpu 18:33.09 total
+
+% pv -ptebar changesets-240212.osm.bz2 | pbzip2 -dc | osmium changeset-filter -U 172435  -f osm -o changesets-mn-172435-pbzip2.osm -F osm -
+6.20GiB 0:12:24 [8.53MiB/s] [8.53MiB/s] [===================================================================================================================================>] 100%
+pv -ptebar changesets-240212.osm.bz2  0.16s user 2.43s system 0% cpu 12:24.15 total
+pbzip2 -dc  1193.07s user 15.95s system 162% cpu 12:25.24 total
+osmium changeset-filter -U 172435 -f osm -o changesets-mn-172435-pbzip2.osm -  818.17s user 15.57s system 111% cpu 12:25.28 total
+
+% time pv -ptebar /var/cache/osm/_nobackup_/torrents/changesets-240212.osm.bz2 | pbzip2 -dc | ./osm-extract-uid.pl '172435' > changesets-mn-172435-osmplanetextract.osm
+6.20GiB 0:05:31 [19.2MiB/s] [19.2MiB/s] [===================================================================================================================================>] 100%
+pv -ptebar /var/cache/osm/_nobackup_/torrents/changesets-240212.osm.bz2  0.05s user 2.05s system 0% cpu 5:31.30 total
+pbzip2 -dc  1117.24s user 28.25s system 345% cpu 5:31.38 total
+./osm-extract-uid.pl '172435' > changesets-mn-172435-osmplanetextract.osm  134.28s user 15.66s system 45% cpu 5:31.38 total
