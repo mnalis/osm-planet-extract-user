@@ -74,8 +74,7 @@ safe_read (int fd, void *buf, size_t count)
 
 
 bool
-wc_lines (char const *file, int fd, uintmax_t *lines_out,
-               uintmax_t *bytes_out)
+wc_lines (char const *file, int fd, uintmax_t *lines_out)
 {
   __m256i accumulator;
   __m256i accumulator2;
@@ -84,11 +83,10 @@ wc_lines (char const *file, int fd, uintmax_t *lines_out,
   __m256i avx_buf[BUFSIZE / sizeof (__m256i)];
   __m256i *datap;
   uintmax_t lines = 0;
-  uintmax_t bytes = 0;
   size_t bytes_read = 0;
 
 
-  if (!lines_out || !bytes_out)
+  if (!lines_out)
     return false;
 
   /* Using two parallel accumulators gave a good performance increase.
@@ -111,8 +109,6 @@ wc_lines (char const *file, int fd, uintmax_t *lines_out,
         {
           return false;
         }
-
-      bytes += bytes_read;
 
       datap = avx_buf;
       char *end = ((char *)avx_buf) + bytes_read;
@@ -158,7 +154,6 @@ wc_lines (char const *file, int fd, uintmax_t *lines_out,
     }
 
   *lines_out = lines;
-  *bytes_out = bytes;
 
   return true;
 }
@@ -169,11 +164,11 @@ int
 main (int argc, char **argv)
 {
     bool ok;
-    uintmax_t lines, bytes;
+    uintmax_t lines;
 
     posix_fadvise (STDIN_FILENO, 0, 0, POSIX_FADV_SEQUENTIAL);
 
-    ok = wc_lines (NULL, STDIN_FILENO, &lines, &bytes);
+    ok = wc_lines (NULL, STDIN_FILENO, &lines);
     if (ok) {
         printf("%ld\n", lines);
     } else {
