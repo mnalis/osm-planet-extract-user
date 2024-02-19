@@ -5,5 +5,8 @@
   (perhaps two-step - extract changeset numbers from changesets-xxxxxx.bz2 to a file, and then fetch all those object
   ids from a file? would that be faster? more universal at least)
   That way one can see current history of all elements they ever touched (e.g. if someone else has changed them)
-- benchmark against e.g. "osmium changeset-filter -U 1234 -f osm -o changesets-1234.osm changesets-240212.osm.bz2"
+- benchmark other potentially faster solutions, PBF based:
+  - https://github.com/b-r-u/osmpbf
+  - https://github.com/woltapp/parallelpbf
+  - https://github.com/simplexspatial/osm4scala
 - add README.md
