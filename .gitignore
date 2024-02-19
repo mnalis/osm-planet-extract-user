@@ -5,3 +5,4 @@
 *.osm.zst*
 nytprof*
 *.out
+*.xml
