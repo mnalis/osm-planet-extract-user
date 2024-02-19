@@ -1,6 +1,6 @@
 CFLAGS = -O2 -g -Wall
 TARGETS = wc_gnu_generic wc_gnu_generic_nochecks wc_mmap wc_simple
-TESTFILE = /tmp/h/h.osm
+TESTFILE = /tmp/h.osm
 
 all: $(TARGETS)
 
