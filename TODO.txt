@@ -1,3 +1,5 @@
 - benchmark some standard libxml (SAX) line-oriented XML parser
 - try if we can use MCE::Grep ?
 - add sample scripts to extract tags user by that user, sorted by popularity
+- another (slower) script which also fetches whole elements (way/node/relation) which mention specified UIDs
+- add README.md
