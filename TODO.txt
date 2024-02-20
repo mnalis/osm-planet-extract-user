@@ -9,5 +9,10 @@
   - https://github.com/b-r-u/osmpbf
   - https://github.com/woltapp/parallelpbf
   - https://github.com/simplexspatial/osm4scala
-- rewrite in C, using https://github.com/intel/hyperscan.git (see stats.txt for significant speed improvements)
+- use Hyperscan, https://github.com/intel/hyperscan.git (see stats.txt for significant speed improvements)
+  in C or in perl? see:
+  - https://metacpan.org/pod/Hyperscan
+  - https://www.intel.com/content/www/us/en/developer/articles/training/why-and-how-to-replace-pcre-with-hyperscan.html
+  - in Debian: see libhyperscan-dev / libvectorscan-dev
+- maybe rewrite in C with hyperscan for even more speed (perl is slow even in dummy 'perl -n' loop, see stats.txt compared to e.g. `wc -l`)
 - add README.md
