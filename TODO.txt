@@ -9,4 +9,5 @@
   - https://github.com/b-r-u/osmpbf
   - https://github.com/woltapp/parallelpbf
   - https://github.com/simplexspatial/osm4scala
+- rewrite in C, using https://github.com/intel/hyperscan.git (see stats.txt for significant speed improvements)
 - add README.md
