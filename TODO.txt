@@ -9,6 +9,7 @@
   - https://github.com/b-r-u/osmpbf
   - https://github.com/woltapp/parallelpbf
   - https://github.com/simplexspatial/osm4scala
+  - https://github.com/hove-io/libosmpbfreader
 - use Hyperscan, https://github.com/intel/hyperscan.git (see stats.txt for significant speed improvements)
   in C or in perl? see:
   - https://metacpan.org/pod/Hyperscan

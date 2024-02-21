@@ -1,5 +1,5 @@
-CFLAGS = -O3 -g -Wall
-TARGETS = wc_gnu_generic wc_gnu_generic_nochecks wc_mmap wc_simple wc_gnu_avx2
+CFLAGS = -O3 -g -W -Wall
+TARGETS = wc_gnu_generic wc_gnu_generic_nochecks wc_mmap wc_simple wc_gnu_avx2 grep_mmap_bm
 TESTFILE = /tmp/h.osm
 TIME = @time -f "%C %Us user %Ss system %es total"
 

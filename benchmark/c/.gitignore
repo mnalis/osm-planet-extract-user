@@ -3,3 +3,4 @@ wc_gnu_generic_nochecks
 wc_mmap
 wc_simple
 wc_gnu_avx2
+grep_mmap_bm
